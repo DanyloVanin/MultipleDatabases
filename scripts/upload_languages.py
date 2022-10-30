@@ -12,6 +12,6 @@ i = 0
 
 for language in csvreader:
     i += 1
-    language_data = {'name': language[3]}
+    language_data = {'name': language[3].strip()}
     response = requests.post(url, json=language_data)
     print(f'({i}/{total}) Language: {language[3]} = {response.status_code}')

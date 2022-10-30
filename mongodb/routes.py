@@ -1,13 +1,7 @@
 from fastapi import APIRouter, Body, HTTPException
 from fastapi.encoders import jsonable_encoder
 
-from mongodb.crud import (
-    create_user,
-    get_users,
-    get_user,
-    update_user,
-    delete_user,
-)
+from mongodb.crud import *
 
 from mongodb.schemas import User, UpdateUser
 
@@ -22,13 +16,13 @@ async def create_user_route(user: User):
 
 
 @router.get("/user")
-async def get_users_route():
-    users = await get_users()
+async def get_users_route(limit: int):
+    users = await get_users(limit)
     return users
 
 
 @router.get("/user/{user_id}", response_model=User)
-async def get_user_data_route(user_id: str):
+async def get_user_data(user_id: str):
     user = await get_user(user_id)
     if user:
         return user
@@ -52,3 +46,29 @@ async def delete_user_route(user_id: str):
     if deleted_student:
         return deleted_student
     raise HTTPException(status_code=404, detail="User not found")
+
+
+# Custom queries
+
+@router.get("/user_cities")
+async def get_all_user_cities_route():
+    user_cities = await get_all_user_cities()
+    return user_cities
+
+
+@router.get("/user/{user_id}/languages")
+async def get_user_languages_route(user_id: str):
+    user_languages = await get_user_languages(user_id)
+    return user_languages
+
+
+@router.get("/user/group/by_organization")
+async def get_users_grouped_by_organization(limit: int):
+    grouped_users = await group_users_by_organization(limit)
+    return grouped_users
+
+
+@router.get("/languages/group/by_city/{city}")
+async def get_languages_grouped_by_user_city(city: str):
+    languages_by_city = await get_languages_from_user_in_city(city)
+    return languages_by_city

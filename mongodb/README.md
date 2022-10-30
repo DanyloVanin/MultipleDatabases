@@ -42,3 +42,4 @@
 - [Pydantic Models](https://pydantic-docs.helpmanual.io/usage/models/#basic-model-usage)
 - [FastAPI Mongo Example](https://testdriven.io/blog/fastapi-mongo/)
 - [Motor: Python driver for MongoDB](https://motor.readthedocs.io/en/stable/)
+- [MongoDB Aggregation Guide](https://studio3t.com/knowledge-base/articles/mongodb-aggregation-framework/)

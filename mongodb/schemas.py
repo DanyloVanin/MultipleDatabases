@@ -68,3 +68,30 @@ class UpdateUser(BaseModel):
     work_experience: list[WorkExperience] = []
     education: list[Education] = []
     contacts: list[Contact] = []
+
+
+## Additional queries shemas
+class UserCities(BaseModel):
+    id: PyObjectId = Field(default_factory=PyObjectId, alias="_id")
+    city: str
+
+
+class UserLanguages(BaseModel):
+    id: PyObjectId = Field(default_factory=PyObjectId, alias="_id")
+    languages: list[str]
+
+
+class OrganizationUser(BaseModel):
+    user_id: str
+    first_name: str
+    last_name: str
+
+
+class UserByOrganization(BaseModel):
+    id: str = Field(alias="_id")
+    users: list[OrganizationUser]
+
+
+class LanguagesFromCity(BaseModel):
+    id: str = Field(alias="_id")
+    languages: list[str]

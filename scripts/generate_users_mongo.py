@@ -32,7 +32,7 @@ for lang in csvreader:
 country_cities = []
 world_cities = open('resources/world-cities.csv', encoding="utf8")
 whitelist_countries = ['Ukraine', 'Germany', 'United Kingdom', 'Canada', 'Poland', 'United States']
-cities_per_country = 50
+cities_per_country = 5
 csvreader = csv.reader(world_cities)
 country_cities_dict = {}
 for row in csvreader:
@@ -71,10 +71,11 @@ for row in csvreader:
 contact_types = ['Twitter', 'Instagram', 'Email', 'TikTok', 'LinkedIn', 'GitHub']
 
 # Create user
-for _ in range(NUM_USERS):
+for current_user_num in range(NUM_USERS):
+    print(f"({current_user_num}/{NUM_USERS}) Creating user...")
     industry = random.choice(industries)
     country_city = random.choice(country_cities)
-    languages = list(set(random.choices(languages, k=random.choice(range(1, 4)))))
+    user_languages = list(set(random.choices(languages, k=random.choice(range(1, 4)))))
 
     # Create fake contacts
     num_contacts = random.randrange(1, 4)
@@ -85,7 +86,7 @@ for _ in range(NUM_USERS):
         contact_url = fake.url()
         contact_type = random.choice(contact_types)
         contact_data = {'type': contact_type, 'url': contact_url}
-        print(contact_data)
+        # print(contact_data)
         contacts.append(contact_data)
 
     # Create fake education
@@ -99,7 +100,7 @@ for _ in range(NUM_USERS):
         year_end = year_start + random.choice([4, 6])
         education_data = {'school_name': university_name, 'year_start': year_start,
                           'year_end': year_end}
-        print(education_data)
+        # print(education_data)
         education.append(education_data)
 
     # Create fake work experience
@@ -114,7 +115,7 @@ for _ in range(NUM_USERS):
         organization = random.choice(organizations)
         work_experience_data = {'job_title': job_title, 'year_start': year_start,
                                 'year_end': year_end, 'organization': organization}
-        print(work_experience_data)
+        # print(work_experience_data)
         work_experience.append(work_experience_data)
 
     fullname = fake.name()
@@ -122,7 +123,7 @@ for _ in range(NUM_USERS):
     lastname = fullname.split()[1]
     user_data = {'first_name': firstname, 'last_name': lastname, 'industry': industry, 'city': country_city['city'],
                  'country': country_city['country'],
-                 'languages': languages, "contacts": contacts, "education": education,
+                 'languages': user_languages, "contacts": contacts, "education": education,
                  "work_experience": work_experience}
     print(user_data)
     response = requests.post(url + '/user', json=user_data).json()
