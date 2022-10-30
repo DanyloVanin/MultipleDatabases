@@ -64,9 +64,9 @@ class User(StructuredNode):
     last_name = StringProperty(required=True)
 
     # Relationships
-    industry = RelationshipTo(Industry, 'ASSOCIATED_WITH', cardinality=cardinality.One)
+    industry = RelationshipTo(Industry, 'ASSOCIATED_WITH')
     languages = RelationshipTo(Language, 'KNOWS')
-    city = RelationshipTo(City, 'LIVES_IN', cardinality=cardinality.One)
+    city = RelationshipTo(City, 'LIVES_IN')
     contacts = RelationshipTo(Contact, 'HAS')
     education = RelationshipTo(Education, 'STUDIED_IN')
     work_experience = RelationshipTo(WorkExperience, 'HAS')

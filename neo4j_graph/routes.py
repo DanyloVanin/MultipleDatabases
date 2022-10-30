@@ -1,6 +1,6 @@
 from fastapi import APIRouter, HTTPException
 
-from neo4j_graph import schemas
+from neo4j_graph import schemas, queries
 from neo4j_graph.models import *
 
 router = APIRouter()
@@ -164,8 +164,8 @@ def user_payload(user):
         "last_name": user.last_name,
         "user_id": user.user_id,
         "language": [i.name for i in user.languages.all()],
-        "city": [i.name for i in user.city.all()][0],
-        "industry": [i.name for i in user.industry.all()][0],
+        "city": [i.name for i in user.city.all()],
+        "industry": [i.name for i in user.industry.all()],
         "contacts": [{"type": i.type, "url": i.url} for i in user.contacts.all()],
         "education": [{"school_name": i.school_name, "year_start": i.year_start, "year_end": i.year_end} for i in
                       user.education.all()],
@@ -218,10 +218,30 @@ def get_user(id: str):
         raise HTTPException(status_code=404, detail="User not found")
     return user_payload(entity)
 
-#
-# @router.get("/country/{country_id}", response_model=schemas.Country)
-# def get_country(country_id: int, db: Session = Depends(get_db)):
-#     entity = crud.get_country(db, country_id=country_id)
-#     if entity is None:
-#         raise HTTPException(status_code=404, detail="Country not found")
-#     return entity
+
+"""
+Advanced Queries
+"""
+
+
+@router.get("/user_cities")
+def get_all_cities_with_user():
+    return list(map(lambda x:  city_payload(x), queries.get_user_cities_query()))
+
+
+@router.get("/user/{user_id}/languages")
+def get_user_languages(user_id: str):
+    return queries.get_user_languages_query(user_id)
+
+
+@router.get("/user/group/by_organization")
+def group_users_by_organization():
+    org_users = queries.get_users_by_organization_query()
+    return org_users
+
+
+@router.get("/languages/group/by_city/{city_name}")
+def get_languages_of_users_from_city(city_name: str):
+    languages_of_users_from_city = queries.get_languages_of_users_from_city(city_name)
+    return languages_of_users_from_city
+

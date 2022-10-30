@@ -7,7 +7,7 @@ from faker.providers import job
 
 db = 'neo4j_graph'
 url = f'http://127.0.0.1:8000/{db}'
-NUM_USERS = 50
+NUM_USERS = 250
 QUERY_LIMIT = 500
 
 fake = Faker()
