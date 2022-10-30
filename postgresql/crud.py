@@ -209,3 +209,43 @@ def create_user(db: Session, user: schemas.UserCreate):
             db.commit()
     return entity
 
+
+"""
+Advanced queries
+"""
+
+
+# get cities where some user exists
+def get_cities_with_users(db: Session):
+    cities_id = db.query(models.User.city_id)
+    return db.query(models.City).filter(models.City.id.in_(cities_id)).all()
+
+
+# get languages of user
+def get_languages_of_user(db: Session, user_id: int):
+    language_ids = db.query(models.UserLanguages.language_id).filter(models.UserLanguages.user_id == user_id)
+    return db.query(models.Language).filter(models.Language.id.in_(language_ids)).all()
+
+
+# group users by organization
+def group_by_organization(db: Session):
+    organization_ids = db.query(models.WorkExperience.organization_id)
+    organizations = db.query(models.Organization).where(models.Organization.id.in_(organization_ids)).all()
+    org_users = {}
+    for org in organizations:
+        user_ids = db.query(models.WorkExperience.user_id).where(models.WorkExperience.organization_id == org.id)
+        users = db.query(models.User.first_name, models.User.last_name, models.User.id).where(
+            models.User.id.in_(user_ids)).all()
+        org_users[org.name] = users
+
+    return org_users
+
+
+# get languages of users in city
+def get_languages_of_users_from_city(city_id: int, db: Session):
+    user_ids = db.query(models.User.id).where(models.User.city_id == city_id)
+    language_ids = db.query(models.UserLanguages.language_id).where(models.UserLanguages.user_id.in_(user_ids))
+    languages_query = db.query(models.Language).where(models.Language.id.in_(language_ids))
+    print(languages_query)
+
+    return languages_query.all()

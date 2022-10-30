@@ -148,7 +148,7 @@ def get_cities(skip: int = 0, limit: int = 100, db: Session = Depends(get_db)):
 
 
 @router.get("/city/{city_id}", response_model=schemas.City)
-def get_country(city_id: int, db: Session = Depends(get_db)):
+def get_city(city_id: int, db: Session = Depends(get_db)):
     entity = crud.get_city(db, city_id=city_id)
     if entity is None:
         raise HTTPException(status_code=404, detail="City not found")
@@ -219,9 +219,36 @@ def read_users(skip: int = 0, limit: int = 100, db: Session = Depends(get_db)):
     return users
 
 
-@router.get("/users/{user_id}", response_model=schemas.User)
+@router.get("/user/{user_id}", response_model=schemas.User)
 def get_user(user_id: int, db: Session = Depends(get_db)):
     db_user = crud.get_user(db, user_id=user_id)
     if db_user is None:
         raise HTTPException(status_code=404, detail="User not found")
     return db_user
+
+
+@router.get("/user_cities")
+def get_all_cities_with_user_associated(db: Session = Depends(get_db)):
+    cities_with_user_associated = crud.get_cities_with_users(db)
+
+    return {"cities": cities_with_user_associated, "total": len(cities_with_user_associated)}
+
+
+@router.get("/user_languages/{user_id}")
+def get_user_languages_by_user_id(user_id: int, db: Session = Depends(get_db)):
+    user_languages = crud.get_languages_of_user(db, user_id)
+
+    return {"user_languages": user_languages, "total": len(user_languages)}
+
+
+@router.get("/user/group/by_organization")
+def group_users_by_organization(db: Session = Depends(get_db)):
+    org_users = crud.group_by_organization(db)
+    return org_users
+
+
+@router.get("/languages/group/by_city/{city_id}")
+def get_languages_of_users_from_city(city_id: int, db: Session = Depends(get_db)):
+    languages_of_users_from_city = crud.get_languages_of_users_from_city(city_id, db)
+    return languages_of_users_from_city
+

@@ -9,3 +9,4 @@
 - [SQLAlchemy UNIQUE constraint](https://docs.sqlalchemy.org/en/14/core/constraints.html#unique-constraint)
 - [SQLAlchemy Basic Relationship Patterns](https://docs.sqlalchemy.org/en/14/orm/basic_relationships.html)
 - [Faker: creating data](https://faker.readthedocs.io/en/stable/index.html)
+- [SQLAlchemy Queries](https://docs.sqlalchemy.org/en/14/orm/query.html)
