@@ -41,3 +41,4 @@
 - [Python Decouple](https://simpleisbetterthancomplex.com/2015/11/26/package-of-the-week-python-decouple.html)
 - [Pydantic Models](https://pydantic-docs.helpmanual.io/usage/models/#basic-model-usage)
 - [FastAPI Mongo Example](https://testdriven.io/blog/fastapi-mongo/)
+- [Motor: Python driver for MongoDB](https://motor.readthedocs.io/en/stable/)
